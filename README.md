@@ -5,8 +5,19 @@
 
 ## What it does?
 
-TODO !!! 
+The motivation behind the `File Bundle` is to provide a consistent and simple abstraction for managing sets of
+configuration / metadata files needed by most devops tool and applications. So for `K8s` the bundle would hold raw K8
+manifests, helm charts and so on. And for `Terraform` it would hold the set of terraform templates.
 
+Using the `File Bundle` the consumer is abstracted from the underlying storage, making it simpler to build and maintain
+a consistent bundle on cloud scale systems.
+
+Please note that this in NOT a generalised file store. There are some important limitations:
+
+* the size of a bundle is limited to 1MB (_same as a config-map in K8s_)
+* the bundle can only hold text files (this might be a bit too limiting)
+* persistence is at a bundle level
+* file permissions are set at the bundle level (if necessary)
 
 ## Dependencies
 
