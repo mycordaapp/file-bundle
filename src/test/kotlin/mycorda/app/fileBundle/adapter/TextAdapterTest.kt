@@ -78,6 +78,14 @@ class TextAdapterTest {
             assertThat(a, equalTo(b))
         }
 
+        val iter3 = result.chars().iterator()
+        val iter4 = exampleFiles.chars().iterator()
+        while (iter3.hasNext() && iter4.hasNext()){
+            val a = iter3.next()
+            val b = iter4.next()
+            assertThat(a, equalTo(b))
+        }
+
         assertThat(result.lines().size, equalTo(exampleFiles.lines().size))
         assertThat(result.length, equalTo(exampleFiles.length))
 
