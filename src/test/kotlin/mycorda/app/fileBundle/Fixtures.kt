@@ -1,9 +1,5 @@
-package mycorda.app.fileBundle.adapter
+package mycorda.app.fileBundle
 
-import mycorda.app.fileBundle.BinaryBundleItem
-import mycorda.app.fileBundle.FileBundle
-import mycorda.app.fileBundle.FileBundleBuilder
-import mycorda.app.fileBundle.TextBundleItem
 import mycorda.app.types.UniqueId
 
 object Fixtures {

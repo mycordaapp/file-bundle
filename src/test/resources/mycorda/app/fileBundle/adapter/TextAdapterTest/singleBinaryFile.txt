@@ -1,0 +1,5 @@
+.metadata.id=abcdef
+.metadata.name=BinaryBundle
+---
+greeting.bin
+SGVsbG8sIHdvcmxk

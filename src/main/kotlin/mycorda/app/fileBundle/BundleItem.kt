@@ -1,10 +1,20 @@
 package mycorda.app.fileBundle
 
-import java.io.BufferedReader
+import java.util.*
 
 sealed class BundleItem(path: String) {
     private val path = path
     fun pathMatches(regexp: Regex): Boolean = regexp.matches(path)
+
+    companion object {
+        fun build(path: String, content: String): BundleItem {
+            return try {
+                BinaryBundleItem(path, content)
+            } catch (_: Exception) {
+                TextBundleItem(path, content)
+            }
+        }
+    }
 }
 
 data class TextBundleItem(val path: String, val content: String) : BundleItem(path) {
@@ -15,16 +25,19 @@ data class TextBundleItem(val path: String, val content: String) : BundleItem(pa
         }
     }
 }
+
 data class BinaryBundleItem(val path: String, val content: ByteArray) : BundleItem(path) {
+    constructor(path: String, base64: String) :
+            this(path, Base64.getMimeDecoder().decode(base64))
+
     override fun hashCode(): Int {
         return path.hashCode()
     }
 
     override fun equals(other: Any?): Boolean {
         return if (other is BinaryBundleItem) {
-            if (other.path == this.path && this.content.size == other.content.size) {
-                this.content == other.content // todo - check binary content
-                //true
+            if ((this.path == other.path) && (this.content.size == other.content.size)){
+                String(this.content) == String(other.content)
             } else {
                 false
             }
