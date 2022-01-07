@@ -68,29 +68,6 @@ class TextAdapterTest {
         val result = adapter.toText(Fixtures.exampleFiles(id)).trim()
         // uncomment to save new test date
         //storeAsText("exampleFiles.txt", result)
-
-        assertThat(result.length, equalTo(exampleFiles.length))
-
-
-        val iter1 = result.lines().iterator()
-        val iter2 = exampleFiles.lines().iterator()
-        while (iter1.hasNext() && iter2.hasNext()){
-            val a = iter1.next()
-            val b = iter2.next()
-            assertThat(a, equalTo(b))
-        }
-
-        val iter3 = result.chars().iterator()
-        val iter4 = exampleFiles.chars().iterator()
-        while (iter3.hasNext() && iter4.hasNext()){
-            val a = iter3.next()
-            val b = iter4.next()
-            assertThat(a, equalTo(b))
-        }
-
-        assertThat(result.lines().size, equalTo(exampleFiles.lines().size))
-        assertThat(result.length, equalTo(exampleFiles.length))
-
         assertThat(result, equalTo(exampleFiles))
     }
 

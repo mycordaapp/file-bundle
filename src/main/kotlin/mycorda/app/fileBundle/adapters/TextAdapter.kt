@@ -9,6 +9,9 @@ import kotlin.collections.HashMap
 
 
 class TextAdapter(private val options: Options = Options()) {
+    // force unix convention for consistent text assertions
+    private val base64Encoder = Base64.getMimeEncoder(76, "\n".toByteArray())
+
     data class Options(
         val fileSeparatorLine: String = "---",
         val summaryMode: Boolean = false
@@ -30,7 +33,7 @@ class TextAdapter(private val options: Options = Options()) {
                 }
                 is BinaryBundleItem -> {
                     sb.append(it.path).append("\n")
-                    sb.append(Base64.getMimeEncoder(76, "\n".toByteArray()).encodeToString(it.content)).append("\n")
+                    sb.append(base64Encoder.encodeToString(it.content)).append("\n")
                 }
             }
         }
