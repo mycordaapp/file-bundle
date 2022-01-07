@@ -69,15 +69,17 @@ class TextAdapterTest {
         // uncomment to save new test date
         //storeAsText("exampleFiles.txt", result)
 
+
         val iter1 = result.lines().iterator()
         val iter2 = exampleFiles.lines().iterator()
         while (iter1.hasNext() && iter2.hasNext()){
             val a = iter1.next()
             val b = iter2.next()
             assertThat(a, equalTo(b))
-
         }
 
+        assertThat(result.lines().size, equalTo(exampleFiles.lines().size))
+        assertThat(result.length, equalTo(exampleFiles.length))
 
         assertThat(result, equalTo(exampleFiles))
     }
