@@ -30,7 +30,7 @@ class TextAdapter(private val options: Options = Options()) {
                 }
                 is BinaryBundleItem -> {
                     sb.append(it.path).append("\n")
-                    sb.append(Base64.getMimeEncoder().encodeToString(it.content)).append("\n")
+                    sb.append(Base64.getMimeEncoder(76, "\n".toByteArray()).encodeToString(it.content)).append("\n")
                 }
             }
         }
