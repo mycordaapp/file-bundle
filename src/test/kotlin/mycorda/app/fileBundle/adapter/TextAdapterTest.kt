@@ -74,10 +74,8 @@ class TextAdapterTest {
         while (iter1.hasNext() && iter2.hasNext()){
             val a = iter1.next()
             val b = iter2.next()
-            if (a != b){
-                println (a)
-                println (b)
-            }
+            assertThat(a, equalTo(b))
+
         }
 
 
