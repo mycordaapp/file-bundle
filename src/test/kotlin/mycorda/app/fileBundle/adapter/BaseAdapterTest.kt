@@ -72,4 +72,12 @@ abstract class BaseAdapterTest<T> {
         assertAdapted(result, exampleFiles)
     }
 
+    @Test
+    fun `should un-convert multi file bundle`() {
+        val adapter = createAdapter()
+        val id = UniqueId.fromString("abcdef")
+        val result = adapter.toBundle(exampleFiles)
+        assertBundle(result, Fixtures.exampleFiles(id))
+    }
+
 }

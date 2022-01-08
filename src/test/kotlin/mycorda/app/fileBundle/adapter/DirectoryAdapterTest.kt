@@ -2,14 +2,11 @@ package mycorda.app.fileBundle.adapter
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import mycorda.app.fileBundle.Fixtures
 import mycorda.app.fileBundle.adapters.FileBundleAdapter
 import mycorda.app.fileBundle.adapters.TextAdapter
-import mycorda.app.types.UniqueId
-import org.junit.jupiter.api.Test
 import java.io.File
 
-class TextAdapterTest : BaseAdapterTest<String>() {
+class DirectoryAdapterTest : BaseAdapterTest<String>() {
 
     private val root = "src/test/resources/mycorda/app/fileBundle/adapter/TextAdapterTest"
 
@@ -40,5 +37,6 @@ class TextAdapterTest : BaseAdapterTest<String>() {
     override fun assertAdapted(actual: String, expected: String) {
         assertThat(actual, equalTo(expected))
     }
+
 
 }

@@ -1,5 +1,6 @@
 .metadata.id=123456
 .metadata.name=HelloWorldBundle
 ---
+TextBundleItem
 greeting.txt
 Hello, world

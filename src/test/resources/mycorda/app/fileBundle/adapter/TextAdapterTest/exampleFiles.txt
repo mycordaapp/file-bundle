@@ -1,11 +1,13 @@
 .metadata.id=abcdef
 .metadata.name=ExampleFiles
 ---
+TextBundleItem
 mobydick.txt
 Call me Ishmael. Some years ago—never mind how long precisely—having little or
 no money in my purse, and nothing particular to interest me on shore, I
 thought I would sail about a little and see the watery part of the world.
 ---
+BinaryBundleItem
 r3.svg
 PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8v
 d3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDM1OS4yIDI3My43Ij48cGF0aCBkPSJN
@@ -18,3 +20,7 @@ LTQ2LjQtNDYuNGgtNDUuOGMwIDUwLjkgNDEuMyA5Mi4yIDkyLjEgOTIuMiA1MC45IDAgOTIuMi00
 MS4zIDkyLjItOTIuMiAwLTQ1LjEtMzIuNC04Mi42LTc1LjEtOTAuNk05MiAwQzc1LjIgMCA1OS41
 IDQuNSA0NS45IDEyLjRWMEgwdjE4MS42aDQ1LjlWOTJjMC0yNS41IDIwLjYtNDYuMSA0Ni4xLTQ2
 LjFsMTUuNC0uMUwxMzguOSAwSDkyeiIvPjwvc3ZnPg==
+---
+TextBundleItem
+/this/is/along/path.txt
+foo
