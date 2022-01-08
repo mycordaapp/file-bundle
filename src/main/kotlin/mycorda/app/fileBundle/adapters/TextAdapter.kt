@@ -8,7 +8,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class TextAdapter(private val options: Options = Options()) {
+class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<String> {
     // force unix convention for consistent text assertions
     private val base64Encoder = Base64.getMimeEncoder(76, "\n".toByteArray())
 
@@ -19,7 +19,7 @@ class TextAdapter(private val options: Options = Options()) {
 
     enum class StateMachine { readMetaData, startBundleItem, bundleContent }
 
-    fun toText(bundle: FileBundle): String {
+    override fun fromBundle(bundle: FileBundle): String {
         val sb = StringBuilder()
         sb.append(".metadata.id=${bundle.id}\n")
         sb.append(".metadata.name=${bundle.name}\n")
@@ -40,7 +40,7 @@ class TextAdapter(private val options: Options = Options()) {
         return sb.toString()
     }
 
-    fun fromText(text: String): FileBundle {
+    override fun toBundle(adapted: String): FileBundle {
         if (options.summaryMode) {
             throw RuntimeException("cannot read a file in summary mode")
         }
@@ -51,7 +51,7 @@ class TextAdapter(private val options: Options = Options()) {
         var bundleName = ""
         var textContent = StringBuilder()
         val items = ArrayList<BundleItem>()
-        text.lines().forEach {
+        adapted.lines().forEach {
             when (state) {
                 StateMachine.readMetaData -> {
                     if (it == options.fileSeparatorLine) {
