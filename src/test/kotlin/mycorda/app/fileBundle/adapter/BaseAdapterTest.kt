@@ -27,7 +27,7 @@ abstract class BaseAdapterTest<T> {
 
 
     @Test
-    fun `should converted single text file bundle`() {
+    fun `should convert single text file bundle`() {
         val adapter = createAdapter()
         val id = UniqueId.fromString("123456")
         val result = adapter.fromBundle(Fixtures.helloWorldBundle(id))

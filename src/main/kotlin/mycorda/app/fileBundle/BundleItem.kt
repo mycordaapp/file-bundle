@@ -1,9 +1,10 @@
 package mycorda.app.fileBundle
 
+import java.lang.RuntimeException
 import java.util.*
 
-sealed class BundleItem(path: String) {
-    private val path = path
+sealed class BundleItem() {
+    abstract val path: String
     fun pathMatches(regexp: Regex): Boolean = regexp.matches(path)
 
     companion object {
@@ -14,10 +15,16 @@ sealed class BundleItem(path: String) {
                 TextBundleItem(path, content)
             }
         }
+
+        val pattern = Regex("^[a-zA-Z0-9_\\-//.]+\$")
     }
 }
 
-data class TextBundleItem(val path: String, val content: String) : BundleItem(path) {
+data class TextBundleItem(override val path: String, val content: String) : BundleItem() {
+    init {
+        if (!pattern.matches(path)) throw RuntimeException("$path contains invalid characters")
+    }
+
     companion object {
         fun fromResource(resourcePath: String, itemPath: String = resourcePath): TextBundleItem {
             val content = this::class.java.getResourceAsStream(resourcePath)!!.bufferedReader().readText()
@@ -26,9 +33,13 @@ data class TextBundleItem(val path: String, val content: String) : BundleItem(pa
     }
 }
 
-data class BinaryBundleItem(val path: String, val content: ByteArray) : BundleItem(path) {
+data class BinaryBundleItem(override val path: String, val content: ByteArray) : BundleItem() {
     constructor(path: String, base64: String) :
             this(path, Base64.getMimeDecoder().decode(base64))
+
+    init {
+        if (!pattern.matches(path)) throw RuntimeException("$path contains invalid characters")
+    }
 
     override fun hashCode(): Int {
         return path.hashCode()
@@ -36,7 +47,7 @@ data class BinaryBundleItem(val path: String, val content: ByteArray) : BundleIt
 
     override fun equals(other: Any?): Boolean {
         return if (other is BinaryBundleItem) {
-            if ((this.path == other.path) && (this.content.size == other.content.size)){
+            if ((this.path == other.path) && (this.content.size == other.content.size)) {
                 String(this.content) == String(other.content)
             } else {
                 false
@@ -52,7 +63,6 @@ data class BinaryBundleItem(val path: String, val content: ByteArray) : BundleIt
             return BinaryBundleItem(itemPath, content)
         }
     }
-
 }
 
 

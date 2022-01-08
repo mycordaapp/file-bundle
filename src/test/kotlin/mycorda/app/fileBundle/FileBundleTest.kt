@@ -15,6 +15,5 @@ class FileBundleTest {
             .addItem(TextBundleItem("settings.properties", "foo=bar"))
             .build()
 
-
     }
 }

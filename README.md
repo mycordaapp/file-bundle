@@ -15,9 +15,16 @@ a consistent bundle on cloud scale systems.
 Please note that this in NOT a generalised file store. There are some important limitations:
 
 * the size of a bundle is limited to 1MB (_same as a config-map in K8s_)
-* the bundle can only hold text files (this might be a bit too limiting)
+* the bundle can text files and binary files
 * persistence is at a bundle level
 * file permissions are set at the bundle level (if necessary)
+
+A set of [adapters](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+can convert the bundle to and from other formats for persistence. For example:
+
+* `TextAdapter` converts a format that holds the content as a single human ready text string
+* `FilesAdapter` converts to and from a list of Java File objects.
+
 
 ## Dependencies
 
