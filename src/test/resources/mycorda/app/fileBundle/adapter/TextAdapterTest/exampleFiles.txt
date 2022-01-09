@@ -22,5 +22,5 @@ IDQuNSA0NS45IDEyLjRWMEgwdjE4MS42aDQ1LjlWOTJjMC0yNS41IDIwLjYtNDYuMSA0Ni4xLTQ2
 LjFsMTUuNC0uMUwxMzguOSAwSDkyeiIvPjwvc3ZnPg==
 ---
 TextBundleItem
-/this/is/along/path.txt
+this/is/along/path.txt
 foo

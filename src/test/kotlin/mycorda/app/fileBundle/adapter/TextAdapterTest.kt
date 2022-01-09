@@ -26,7 +26,7 @@ class TextAdapterTest : BaseAdapterTest<String>() {
     }
 
 
-    override fun createAdapter(): FileBundleAdapter<String> = TextAdapter()
+    override fun createAdapter(mode: DataMode): FileBundleAdapter<String> = TextAdapter()
 
 
     override fun loadAdapted(path: String): String {

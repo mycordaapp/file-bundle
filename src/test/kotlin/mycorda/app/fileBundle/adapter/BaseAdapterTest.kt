@@ -7,11 +7,14 @@ import mycorda.app.fileBundle.Fixtures
 import mycorda.app.fileBundle.adapters.FileBundleAdapter
 import mycorda.app.types.UniqueId
 import org.junit.jupiter.api.Test
+import kotlin.contracts.contract
 
 abstract class BaseAdapterTest<T> {
+    enum class DataMode { expected, actual }   //
+
     protected abstract fun loadAdapted(path: String): T
     protected abstract fun storeAdapted(path: String, adapted: T)
-    protected abstract fun createAdapter(): FileBundleAdapter<T>
+    protected abstract fun createAdapter(mode : DataMode): FileBundleAdapter<T>
 
     protected fun assertBundle(actual: FileBundle, expected: FileBundle) {
         assertThat(actual, equalTo(expected))
@@ -28,7 +31,7 @@ abstract class BaseAdapterTest<T> {
 
     @Test
     fun `should convert single text file bundle`() {
-        val adapter = createAdapter()
+        val adapter = createAdapter(DataMode.actual)
         val id = UniqueId.fromString("123456")
         val result = adapter.fromBundle(Fixtures.helloWorldBundle(id))
         // uncomment to save new test date
@@ -38,7 +41,7 @@ abstract class BaseAdapterTest<T> {
 
     @Test
     fun `should un-convert single text file bundle`() {
-        val adapter = createAdapter()
+        val adapter = createAdapter(DataMode.expected)
         val id = UniqueId.fromString("123456")
         val result = adapter.toBundle(singleTextFile)
         assertBundle(result, Fixtures.helloWorldBundle(id))
@@ -46,7 +49,7 @@ abstract class BaseAdapterTest<T> {
 
     @Test
     fun `should convert single binary file bundle`() {
-        val adapter = createAdapter()
+        val adapter = createAdapter(DataMode.actual)
         val id = UniqueId.fromString("abcdef")
         val result = adapter.fromBundle(Fixtures.binaryBundle(id))
         // uncomment to save new test date
@@ -56,7 +59,7 @@ abstract class BaseAdapterTest<T> {
 
     @Test
     fun `should un-convert single binary file bundle`() {
-        val adapter = createAdapter()
+        val adapter = createAdapter(DataMode.expected)
         val id = UniqueId.fromString("abcdef")
         val result = adapter.toBundle(singleBinaryFile)
         assertBundle(result, Fixtures.binaryBundle(id))
@@ -64,7 +67,7 @@ abstract class BaseAdapterTest<T> {
 
     @Test
     fun `should convert multi file bundle`() {
-        val adapter = createAdapter()
+        val adapter = createAdapter(DataMode.actual)
         val id = UniqueId.fromString("abcdef")
         val result = adapter.fromBundle(Fixtures.exampleFiles(id))
         // uncomment to save new test date
@@ -74,7 +77,7 @@ abstract class BaseAdapterTest<T> {
 
     @Test
     fun `should un-convert multi file bundle`() {
-        val adapter = createAdapter()
+        val adapter = createAdapter(DataMode.expected)
         val id = UniqueId.fromString("abcdef")
         val result = adapter.toBundle(exampleFiles)
         assertBundle(result, Fixtures.exampleFiles(id))
