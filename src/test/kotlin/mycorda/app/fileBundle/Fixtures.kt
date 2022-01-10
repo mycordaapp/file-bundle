@@ -27,6 +27,7 @@ object Fixtures {
             .addItem(TextBundleItem.fromResource("/examples/mobydick.txt", "mobydick.txt"))
             .addItem(BinaryBundleItem.fromResource("/examples/r3.svg", "r3.svg"))
             .addItem(TextBundleItem("this/is/along/path.txt", "foo"))
+            .addItem(TextBundleItem.fromResource("/examples/verylongline.txt","verylongline.txt"))
             .build()
     }
 }

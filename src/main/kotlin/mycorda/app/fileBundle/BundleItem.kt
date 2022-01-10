@@ -1,5 +1,6 @@
 package mycorda.app.fileBundle
 
+import java.io.File
 import java.lang.RuntimeException
 import java.util.*
 
@@ -8,27 +9,26 @@ sealed class BundleItem() {
     fun pathMatches(regexp: Regex): Boolean = regexp.matches(path)
 
     companion object {
-        fun build(path: String, content: String): BundleItem {
-            return try {
-                BinaryBundleItem(path, content)
-            } catch (_: Exception) {
-                TextBundleItem(path, content)
-            }
-        }
-
-        val pattern = Regex("^[a-zA-Z0-9_\\-//.]+\$")
+        val validPathPattern = Regex("^[a-zA-Z0-9_\\-//.]+\$")
     }
 }
 
 data class TextBundleItem(override val path: String, val content: String) : BundleItem() {
     init {
-        if (!pattern.matches(path)) throw RuntimeException("$path contains invalid characters")
+        if (path.length > 256) throw RuntimeException("path must be no more than 256 character long")
+        if (!validPathPattern.matches(path)) throw RuntimeException("$path contains invalid characters")
+        if (path.startsWith("/")) throw RuntimeException("$path cannot start with a slash ('/') character")
     }
 
     companion object {
-        fun fromResource(resourcePath: String, itemPath: String = resourcePath): TextBundleItem {
+        fun fromResource(resourcePath: String, path: String = resourcePath): TextBundleItem {
             val content = this::class.java.getResourceAsStream(resourcePath)!!.bufferedReader().readText()
-            return TextBundleItem(itemPath, content)
+            return TextBundleItem(path, content)
+        }
+
+        fun fromFile(file: File, path: String): TextBundleItem {
+            val content = file.readText()
+            return TextBundleItem(path, content)
         }
     }
 }
@@ -38,7 +38,9 @@ data class BinaryBundleItem(override val path: String, val content: ByteArray) :
             this(path, Base64.getMimeDecoder().decode(base64))
 
     init {
-        if (!pattern.matches(path)) throw RuntimeException("$path contains invalid characters")
+        if (path.length > 256) throw RuntimeException("path must be no more than 256 character long")
+        if (!validPathPattern.matches(path)) throw RuntimeException("$path contains invalid characters")
+        if (path.startsWith("/")) throw RuntimeException("$path cannot start with a slash ('/') character")
     }
 
     override fun hashCode(): Int {
@@ -58,9 +60,14 @@ data class BinaryBundleItem(override val path: String, val content: ByteArray) :
     }
 
     companion object {
-        fun fromResource(resourcePath: String, itemPath: String = resourcePath): BinaryBundleItem {
+        fun fromResource(resourcePath: String, path: String = resourcePath): BinaryBundleItem {
             val content = this::class.java.getResourceAsStream(resourcePath)!!.readAllBytes()
-            return BinaryBundleItem(itemPath, content)
+            return BinaryBundleItem(path, content)
+        }
+
+        fun fromFile(file: File, path: String): BinaryBundleItem {
+            val content = file.readBytes()
+            return BinaryBundleItem(path, content)
         }
     }
 }

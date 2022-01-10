@@ -61,6 +61,4 @@ class FileBundleBuilder {
     fun build(): FileBundle {
         return FileBundle(id, name, BundleItemList(items))
     }
-
-
 }

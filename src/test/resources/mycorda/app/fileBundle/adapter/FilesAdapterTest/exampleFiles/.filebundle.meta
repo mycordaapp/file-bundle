@@ -6,3 +6,5 @@
 .metadata.type.2=BinaryBundleItem
 .metadata.filename.3=this/is/along/path.txt
 .metadata.type.3=TextBundleItem
+.metadata.filename.4=verylongline.txt
+.metadata.type.4=TextBundleItem
