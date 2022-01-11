@@ -13,7 +13,7 @@ class BundleItemList(items: List<BundleItem>) : SimpleImmutableList<BundleItem>(
     }
 }
 
-class FileBundle(
+data class FileBundle(
     val id: UniqueId,
     val name: String,   // should there be limits on the character set in name?
     val items: BundleItemList
