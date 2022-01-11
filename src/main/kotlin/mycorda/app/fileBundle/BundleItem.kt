@@ -1,8 +1,10 @@
 package mycorda.app.fileBundle
 
 import java.io.File
-import java.lang.RuntimeException
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
+
 
 sealed class BundleItem() {
     abstract val path: String
@@ -61,7 +63,10 @@ data class BinaryBundleItem(override val path: String, val content: ByteArray) :
 
     companion object {
         fun fromResource(resourcePath: String, path: String = resourcePath): BinaryBundleItem {
-            val content = this::class.java.getResourceAsStream(resourcePath)!!.readAllBytes()
+            val content: ByteArray =
+                Files.readAllBytes(Paths.get(this::class.java.getResource(resourcePath).toURI()))
+
+            //val content = this::class.java.getResourceAsStream(resourcePath)!!.readAllBytes()
             return BinaryBundleItem(path, content)
         }
 
