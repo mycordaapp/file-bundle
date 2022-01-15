@@ -15,11 +15,23 @@ sealed class BundleItem() {
     }
 }
 
-data class TextBundleItem(override val path: String, val content: String) : BundleItem() {
+class TextBundleItem(override val path: String, val content: String) : BundleItem() {
     init {
         if (path.length > 256) throw RuntimeException("path must be no more than 256 character long")
         if (!validPathPattern.matches(path)) throw RuntimeException("$path contains invalid characters")
         if (path.startsWith("/")) throw RuntimeException("$path cannot start with a slash ('/') character")
+    }
+
+    override fun hashCode(): Int {
+        return path.hashCode() xor content.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is TextBundleItem) {
+            (this.path == other.path) && (this.content == other.content)
+        } else {
+            false
+        }
     }
 
     companion object {
@@ -35,7 +47,7 @@ data class TextBundleItem(override val path: String, val content: String) : Bund
     }
 }
 
-data class BinaryBundleItem(override val path: String, val content: ByteArray) : BundleItem() {
+class BinaryBundleItem(override val path: String, val content: ByteArray) : BundleItem() {
     constructor(path: String, base64: String) :
             this(path, Base64.getMimeDecoder().decode(base64))
 
