@@ -44,13 +44,13 @@ dependencies {
     implementation("com.github.jitpack:gradle-simple:1.0")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    implementation "com.github.mycordaapp:simple-kv-store:$sksVersion"
     implementation "com.github.mycordaapp:commons:$commonsVersion"
     implementation "com.github.mycordaapp:registry:$registryVersion"
 
     testImplementation("com.natpryce:hamkrest:$hamkrestVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation('org.junit.platform:junit-platform-runner:1.0.0')
+    testImplementation("com.github.mycordaapp:really-simple-serialisation:$rssVersion")
 }
 
 test {

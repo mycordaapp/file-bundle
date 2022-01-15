@@ -7,7 +7,6 @@ import mycorda.app.fileBundle.Fixtures
 import mycorda.app.fileBundle.adapters.FileBundleAdapter
 import mycorda.app.types.UniqueId
 import org.junit.jupiter.api.Test
-import kotlin.contracts.contract
 
 abstract class BaseAdapterTest<T> {
     enum class DataMode { expected, actual }   //
@@ -69,7 +68,7 @@ abstract class BaseAdapterTest<T> {
     fun `should convert multi file bundle`() {
         val adapter = createAdapter(DataMode.actual)
         val id = UniqueId.fromString("abcdef")
-        val result = adapter.fromBundle(Fixtures.exampleFiles(id))
+        val result = adapter.fromBundle(Fixtures.allExampleFiles(id))
         // uncomment to save new test date
         //storeAdapted("exampleFiles.txt", result)
         assertAdapted(result, exampleFiles)
@@ -80,7 +79,7 @@ abstract class BaseAdapterTest<T> {
         val adapter = createAdapter(DataMode.expected)
         val id = UniqueId.fromString("abcdef")
         val result = adapter.toBundle(exampleFiles)
-        assertBundle(result, Fixtures.exampleFiles(id))
+        assertBundle(result, Fixtures.allExampleFiles(id))
     }
 
 }

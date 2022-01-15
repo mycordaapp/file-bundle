@@ -20,7 +20,7 @@ object Fixtures {
             .build()
     }
 
-    fun exampleFiles(id: UniqueId = UniqueId.randomUUID()): FileBundle {
+    fun allExampleFiles(id: UniqueId = UniqueId.randomUUID()): FileBundle {
         return FileBundleBuilder()
             .withName("ExampleFiles")
             .withId(id)
