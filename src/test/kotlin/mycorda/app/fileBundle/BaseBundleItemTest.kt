@@ -32,6 +32,4 @@ abstract class BaseBundleItemTest {
         assertDoesNotThrow { buildBundleItem("a".repeat(256)) }
         assertDoesNotThrow { buildBundleItem("a") }
     }
-
-
 }

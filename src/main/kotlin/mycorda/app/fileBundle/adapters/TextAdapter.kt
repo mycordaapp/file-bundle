@@ -52,7 +52,7 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
 
     override fun toBundle(adapted: String): FileBundle {
         if (options.summaryMode) {
-            throw RuntimeException("cannot read a file in summary mode")
+            throw RuntimeException("cannot read text when in summary mode")
         }
 
         // this is a mini state machine
@@ -67,7 +67,7 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
                 StateMachine.readMetaData -> {
                     if (it == options.fileSeparatorLine) {
                         if (metaData.containsKey(".metadata.summaryMode")) {
-                            throw RuntimeException("cannot read a file in summary mode")
+                            throw RuntimeException("cannot read text stored in summary mode")
                         }
                         state = StateMachine.bundleType
                     } else {
