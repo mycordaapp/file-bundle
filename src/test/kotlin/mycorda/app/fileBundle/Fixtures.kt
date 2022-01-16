@@ -1,5 +1,6 @@
 package mycorda.app.fileBundle
 
+import mycorda.app.fileBundle.builders.FileBundleBuilder
 import mycorda.app.types.UniqueId
 
 object Fixtures {

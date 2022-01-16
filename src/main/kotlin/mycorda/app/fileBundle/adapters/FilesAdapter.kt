@@ -1,6 +1,7 @@
 package mycorda.app.fileBundle.adapters
 
 import mycorda.app.fileBundle.*
+import mycorda.app.fileBundle.builders.FileBundleBuilder
 import mycorda.app.types.UniqueId
 import java.io.File
 import java.lang.RuntimeException

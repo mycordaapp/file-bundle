@@ -1,5 +1,6 @@
 package mycorda.app.fileBundle
 
+import mycorda.app.fileBundle.adapters.TextAdapter
 import mycorda.app.types.SimpleImmutableList
 import mycorda.app.types.UniqueId
 
@@ -30,35 +31,9 @@ data class FileBundle(
     override fun hashCode(): Int {
         return id.hashCode() xor name.hashCode()
     }
-}
 
-class FileBundleBuilder {
-    private var id: UniqueId = UniqueId.alphanumeric()
-    private var name: String = ""
-    private val items = ArrayList<BundleItem>()
-    fun withId(id: UniqueId): FileBundleBuilder {
-        this.id = id
-        return this
-    }
-
-    fun withName(name: String): FileBundleBuilder {
-        this.name = name
-        return this
-    }
-
-    fun addItem(item: BundleItem): FileBundleBuilder {
-        items.add(item)
-        return this
-    }
-
-    fun addItems(items: Iterable<BundleItem>): FileBundleBuilder {
-        items.forEach {
-            addItem(it)
-        }
-        return this
-    }
-
-    fun build(): FileBundle {
-        return FileBundle(id, name, BundleItemList(items))
+    override fun toString(): String {
+        val adapter = TextAdapter(TextAdapter.Options(summaryMode = true))
+        return adapter.fromBundle(this)
     }
 }

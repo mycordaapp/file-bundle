@@ -1,6 +1,7 @@
 package mycorda.app.fileBundle.adapters
 
 import mycorda.app.fileBundle.*
+import mycorda.app.fileBundle.builders.FileBundleBuilder
 import mycorda.app.types.UniqueId
 import java.lang.RuntimeException
 import java.util.*
@@ -29,12 +30,20 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
                 is TextBundleItem -> {
                     sb.append("TextBundleItem\n")
                     sb.append(it.path).append("\n")
-                    sb.append(it.content).append("\n")
+                    if (options.summaryMode) {
+                        sb.append("length: ${it.content.length}\n")
+                    } else {
+                        sb.append(it.content).append("\n")
+                    }
                 }
                 is BinaryBundleItem -> {
                     sb.append("BinaryBundleItem\n")
                     sb.append(it.path).append("\n")
-                    sb.append(base64Encoder.encodeToString(it.content)).append("\n")
+                    if (options.summaryMode) {
+                        sb.append("bytes: ${it.content.size}\n")
+                    } else {
+                        sb.append(base64Encoder.encodeToString(it.content)).append("\n")
+                    }
                 }
             }
         }
