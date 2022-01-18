@@ -24,25 +24,27 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
         sb.append(".metadata.id=${bundle.id}\n")
         sb.append(".metadata.name=${bundle.name}\n")
         if (options.summaryMode) sb.append(".metadata.summaryMode=true\n")
-        bundle.items.forEach {
+        bundle.items.forEachIndexed { index, item ->
             sb.append("${options.fileSeparatorLine}\n")
-            when (it) {
+            when (item) {
                 is TextBundleItem -> {
                     sb.append("TextBundleItem\n")
-                    sb.append(it.path).append("\n")
+                    sb.append(item.path).append("\n")
                     if (options.summaryMode) {
-                        sb.append("length: ${it.content.length}\n")
+                        sb.append("length: ${item.content.length}\n")
                     } else {
-                        sb.append(it.content).append("\n")
+                        sb.append(item.content)
+                        if (index != bundle.items.size-1) sb.append("\n")
                     }
                 }
                 is BinaryBundleItem -> {
                     sb.append("BinaryBundleItem\n")
-                    sb.append(it.path).append("\n")
+                    sb.append(item.path).append("\n")
                     if (options.summaryMode) {
-                        sb.append("bytes: ${it.content.size}\n")
+                        sb.append("bytes: ${item.content.size}\n")
                     } else {
-                        sb.append(base64Encoder.encodeToString(it.content)).append("\n")
+                        sb.append(base64Encoder.encodeToString(item.content))
+                        if (index != bundle.items.size-1) sb.append("\n")
                     }
                 }
             }

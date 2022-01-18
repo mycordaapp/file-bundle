@@ -7,7 +7,10 @@ import mycorda.app.fileBundle.TextBundleItem
 import mycorda.app.types.UniqueId
 import java.io.File
 
-class ScanDirectoryBuilder(private val textFileExtensions: Set<String> = defaultTextFileExtensions) {
+class ScanDirectoryBuilder(
+    private val textFileExtensions: Set<String> = defaultTextFileExtensions,
+    private val knownTextFiles: Set<String> = defaultTextFileNames
+) {
 
     private var id: UniqueId = UniqueId.alphanumeric()
     private var name: String = ""
@@ -35,14 +38,10 @@ class ScanDirectoryBuilder(private val textFileExtensions: Set<String> = default
             if (it.isFile) {
                 val path = it.canonicalPath.removePrefix(root.path + "/")
 
-                if (path.contains(".")) {
-                    val parts = path.split(".")
-                    val extension = parts[parts.size - 1].toLowerCase()
-                    if (textFileExtensions.contains(extension)) {
-                        items.add(TextBundleItem.fromFile(it, path))
-                    } else {
-                        items.add(BinaryBundleItem.fromFile(it, path))
-                    }
+                if (isTextFile(path)) {
+                    items.add(TextBundleItem.fromFile(it, path))
+                } else {
+                    items.add(BinaryBundleItem.fromFile(it, path))
                 }
             }
         }
@@ -55,8 +54,28 @@ class ScanDirectoryBuilder(private val textFileExtensions: Set<String> = default
 
     }
 
+    private fun isTextFile(path: String): Boolean {
+        return hasTextExtension(path) || isKnownTextFile(path)
+    }
+
+    private fun isKnownTextFile(path: String): Boolean {
+        val parts = path.split("/")
+        val fileName = parts[parts.size - 1]
+        return knownTextFiles.contains(fileName)
+    }
+
+    private fun hasTextExtension(path: String): Boolean {
+        return if (path.contains(".")) {
+            val parts = path.split(".")
+            val extension = parts[parts.size - 1].toLowerCase()
+            textFileExtensions.contains(extension)
+        } else {
+            false
+        }
+    }
+
     companion object {
         val defaultTextFileExtensions = setOf("txt", "log", "md")
-        val defaultTextFileNames = setOf("licence", "log")
+        val defaultTextFileNames = setOf("LICENCE", "LICENSE")
     }
 }

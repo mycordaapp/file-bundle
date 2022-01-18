@@ -1,0 +1,10 @@
+.metadata.id=123456
+.metadata.name=MixOfLineTerminationBundle
+.metadata.filename.1=unix.txt
+.metadata.type.1=TextBundleItem
+.metadata.filename.2=windows.txt
+.metadata.type.2=TextBundleItem
+.metadata.filename.3=trailing-unix.txt
+.metadata.type.3=TextBundleItem
+.metadata.filename.4=trailing-windows.txt
+.metadata.type.4=TextBundleItem

@@ -14,11 +14,15 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.lang.RuntimeException
 
-class FilesAdapterTest : BaseAdapterTest<List<File>>() {
+class FilesAdapterTest() : BaseAdapterTest<List<File>>() {
     private val root = "src/test/resources/mycorda/app/fileBundle/adapter/FilesAdapterTest"
 
     override val singleTextFile by lazy {
         loadAdapted("singleTextFile")
+    }
+
+    override val mixOfLineTermination by lazy {
+        loadAdapted("mixOfLineTermination")
     }
 
     override val singleBinaryFile by lazy {
@@ -47,8 +51,13 @@ class FilesAdapterTest : BaseAdapterTest<List<File>>() {
     }
 
     override fun assertAdapted(actual: List<File>, expected: List<File>) {
+
+
         val a = actual.sortedBy { it.name }
         val e = expected.sortedBy { it.name }
+
+        val x = a.last().length()
+        val y = e.last().length()
         assertThat(a.map { it.name }, equalTo(e.map { it.name }))
         assertThat(a.map { it.length() }, equalTo(e.map { it.length() }))
 
@@ -65,7 +74,12 @@ class FilesAdapterTest : BaseAdapterTest<List<File>>() {
         // cannot load as the data was stored in summary mode
         assertThat(
             { normalAdapter.toBundle(stored) },
-            throws<RuntimeException>(has(Exception::message, present(equalTo("cannot read text stored in summary mode"))))
+            throws<RuntimeException>(
+                has(
+                    Exception::message,
+                    present(equalTo("cannot read text stored in summary mode"))
+                )
+            )
         )
 
         // cannot load as the adapter is in summary  mode
@@ -74,6 +88,5 @@ class FilesAdapterTest : BaseAdapterTest<List<File>>() {
             throws<RuntimeException>(has(Exception::message, present(equalTo("cannot read text when in summary mode"))))
         )
     }
-
 
 }

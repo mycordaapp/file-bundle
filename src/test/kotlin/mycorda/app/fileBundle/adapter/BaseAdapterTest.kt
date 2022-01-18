@@ -23,6 +23,8 @@ abstract class BaseAdapterTest<T> {
 
     protected abstract val singleTextFile: T
 
+    protected abstract val mixOfLineTermination: T
+
     protected abstract val singleBinaryFile: T
 
     protected abstract val exampleFiles: T
@@ -45,6 +47,25 @@ abstract class BaseAdapterTest<T> {
         val result = adapter.toBundle(singleTextFile)
         assertBundle(result, Fixtures.helloWorldBundle(id))
     }
+
+    @Test
+    fun `should convert mixed line terminations bundle`() {
+        val adapter = createAdapter(DataMode.actual)
+        val id = UniqueId.fromString("123456")
+        val result = adapter.fromBundle(Fixtures.mixOfLineTerminationBundle(id))
+        // uncomment to save new test date
+        //storeAdapted("mixOfLineTermination.txt", result)
+        assertAdapted(result, mixOfLineTermination)
+    }
+
+    @Test
+    fun `should un-convert mixed line terminations bundle`() {
+        val adapter = createAdapter(DataMode.expected)
+        val id = UniqueId.fromString("123456")
+        val result = adapter.toBundle(mixOfLineTermination)
+        assertBundle(result, Fixtures.mixOfLineTerminationBundle(id))
+    }
+
 
     @Test
     fun `should convert single binary file bundle`() {
@@ -70,7 +91,7 @@ abstract class BaseAdapterTest<T> {
         val id = UniqueId.fromString("abcdef")
         val result = adapter.fromBundle(Fixtures.allExampleFiles(id))
         // uncomment to save new test date
-        //storeAdapted("exampleFiles.txt", result)
+        storeAdapted("exampleFiles", result)
         assertAdapted(result, exampleFiles)
     }
 

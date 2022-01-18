@@ -15,12 +15,14 @@ sealed class BundleItem() {
     }
 }
 
-class TextBundleItem(override val path: String, val content: String) : BundleItem() {
+class TextBundleItem(override val path: String, rawContent: String) : BundleItem() {
     init {
         if (path.length > 256) throw RuntimeException("path must be no more than 256 character long")
         if (!validPathPattern.matches(path)) throw RuntimeException("$path contains invalid characters")
         if (path.startsWith("/")) throw RuntimeException("$path cannot start with a slash ('/') character")
     }
+
+    val content : String = rawContent.replace("\r\n","\n")
 
     override fun hashCode(): Int {
         return path.hashCode() xor content.hashCode()

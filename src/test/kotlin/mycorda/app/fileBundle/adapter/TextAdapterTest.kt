@@ -17,6 +17,10 @@ class TextAdapterTest : BaseAdapterTest<String>() {
         loadAdapted("singleTextFile.txt")
     }
 
+    override val mixOfLineTermination by lazy {
+        loadAdapted("mixOfLineTermination.txt")
+    }
+
     override val singleBinaryFile by lazy {
         loadAdapted("singleBinaryFile.txt")
     }
@@ -42,3 +46,5 @@ class TextAdapterTest : BaseAdapterTest<String>() {
     }
 
 }
+
+

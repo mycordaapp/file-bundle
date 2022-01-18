@@ -13,6 +13,17 @@ object Fixtures {
             .build()
     }
 
+    fun mixOfLineTerminationBundle(id: UniqueId = UniqueId.randomUUID()): FileBundle {
+        return FileBundleBuilder()
+            .withName("MixOfLineTerminationBundle")
+            .withId(id)
+            .addItem(TextBundleItem("unix.txt", "Hello,\n world"))
+            .addItem(TextBundleItem("windows.txt", "Hello,\r\n world"))
+            .addItem(TextBundleItem("trailing-unix.txt", "Hello, world\n"))
+            .addItem(TextBundleItem("trailing-windows.txt", "Hello, world\r\n"))
+            .build()
+    }
+
     fun binaryBundle(id: UniqueId = UniqueId.randomUUID()): FileBundle {
         return FileBundleBuilder()
             .withName("BinaryBundle")
@@ -28,7 +39,9 @@ object Fixtures {
             .addItem(TextBundleItem.fromResource("/examples/mobydick.txt", "mobydick.txt"))
             .addItem(BinaryBundleItem.fromResource("/examples/r3.svg", "r3.svg"))
             .addItem(TextBundleItem("this/is/along/path.txt", "foo"))
-            .addItem(TextBundleItem.fromResource("/examples/verylongline.txt","verylongline.txt"))
+            .addItem(TextBundleItem("trailing-new-line.txt", "foo\n"))
+            .addItem(TextBundleItem.fromResource("/examples/verylongline.txt", "verylongline.txt"))
+            .addItem(TextBundleItem.fromResource("/examples/LICENCE", "LICENCE"))
             .build()
     }
 }

@@ -6,5 +6,9 @@
 .metadata.type.2=BinaryBundleItem
 .metadata.filename.3=this/is/along/path.txt
 .metadata.type.3=TextBundleItem
-.metadata.filename.4=verylongline.txt
+.metadata.filename.4=trailing-new-line.txt
 .metadata.type.4=TextBundleItem
+.metadata.filename.5=verylongline.txt
+.metadata.type.5=TextBundleItem
+.metadata.filename.6=LICENCE
+.metadata.type.6=TextBundleItem

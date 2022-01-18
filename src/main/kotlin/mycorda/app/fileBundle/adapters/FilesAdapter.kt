@@ -91,7 +91,7 @@ class FilesAdapter(private val rootDir: String) : FileBundleAdapter<List<File>> 
     }
 
     private fun findFileByPath(path: String, adapted: List<File>): File {
-        return adapted.single { it.canonicalPath.endsWith(path) }
+        return adapted.single { it.canonicalPath.endsWith("/" + path) }
     }
 
     private fun extractRawMetaData(adapted: List<File>): Map<String, String> {
