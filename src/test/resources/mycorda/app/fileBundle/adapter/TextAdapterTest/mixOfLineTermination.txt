@@ -1,0 +1,21 @@
+.metadata.id=123456
+.metadata.name=MixOfLineTerminationBundle
+---
+TextBundleItem
+unix.txt
+Hello,
+ world
+---
+TextBundleItem
+windows.txt
+Hello,
+ world
+---
+TextBundleItem
+trailing-unix.txt
+Hello, world
+
+---
+TextBundleItem
+trailing-windows.txt
+Hello, world
