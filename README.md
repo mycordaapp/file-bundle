@@ -14,10 +14,10 @@ a consistent bundle on cloud scale systems.
 
 Please note that this in NOT a generalised file store. There are some important limitations:
 
-* the size of a bundle is limited to 1MB (_same as a config-map in K8s_)
+* the size of a bundle is limited (limit to be defined, assume  10MB for now)
 * the bundle can text files and binary files
 * persistence is at a bundle level
-* file permissions are set at the bundle level (if necessary)
+* unix executable flag (`chmod +x`) is preserved
 
 A set of [adapters](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
 can convert the bundle to and from other formats for persistence. For example:
