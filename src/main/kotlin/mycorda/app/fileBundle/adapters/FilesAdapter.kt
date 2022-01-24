@@ -53,6 +53,7 @@ class FilesAdapter(private val rootDir: String) : FileBundleAdapter<List<File>> 
         bundle.items.forEachIndexed { index, item ->
             sb.append(".metadata.filename.${index + 1}=${item.path}\n")
             sb.append(".metadata.type.${index + 1}=${item::class.simpleName}\n")
+            sb.append(".metadata.isExecutable.${index + 1}=${item.isExecutable}\n")
         }
         File("$rootDir/.filebundle.meta").apply {
             this.writeText(sb.toString())
@@ -71,14 +72,15 @@ class FilesAdapter(private val rootDir: String) : FileBundleAdapter<List<File>> 
         (1..fileCount).forEach {
             val path = rawMeta[".metadata.filename.${it}"]!!
             val type = rawMeta[".metadata.type.${it}"]!!
+            val isExecutable = rawMeta[".metadata.isExecutable.${it}"]!!.toBoolean()
 
             val file = findFileByPath(path, adapted)
             when (type) {
                 "TextBundleItem" -> {
-                    bundleItems.add(TextBundleItem(path, file.readText()))
+                    bundleItems.add(TextBundleItem(path, file.readText(), isExecutable))
                 }
                 "BinaryBundleItem" -> {
-                    bundleItems.add(BinaryBundleItem(path, file.readBytes()))
+                    bundleItems.add(BinaryBundleItem(path, file.readBytes(), isExecutable))
                 }
             }
         }

@@ -5,9 +5,9 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 
-
 sealed class BundleItem() {
     abstract val path: String
+    abstract val isExecutable: Boolean
     fun pathMatches(regexp: Regex): Boolean = regexp.matches(path)
 
     companion object {
@@ -15,14 +15,19 @@ sealed class BundleItem() {
     }
 }
 
-class TextBundleItem(override val path: String, rawContent: String) : BundleItem() {
+class TextBundleItem(
+    override val path: String,
+    rawContent: String,
+    override val isExecutable: Boolean = false
+) :
+    BundleItem() {
     init {
         if (path.length > 256) throw RuntimeException("path must be no more than 256 character long")
         if (!validPathPattern.matches(path)) throw RuntimeException("$path contains invalid characters")
         if (path.startsWith("/")) throw RuntimeException("$path cannot start with a slash ('/') character")
     }
 
-    val content : String = rawContent.replace("\r\n","\n")
+    val content: String = rawContent.replace("\r\n", "\n")
 
     override fun hashCode(): Int {
         return path.hashCode() xor content.hashCode()
@@ -30,7 +35,7 @@ class TextBundleItem(override val path: String, rawContent: String) : BundleItem
 
     override fun equals(other: Any?): Boolean {
         return if (other is TextBundleItem) {
-            (this.path == other.path) && (this.content == other.content)
+            (this.path == other.path) && (this.content == other.content) && (this.isExecutable == other.isExecutable)
         } else {
             false
         }
@@ -49,9 +54,13 @@ class TextBundleItem(override val path: String, rawContent: String) : BundleItem
     }
 }
 
-class BinaryBundleItem(override val path: String, val content: ByteArray) : BundleItem() {
-    constructor(path: String, base64: String) :
-            this(path, Base64.getMimeDecoder().decode(base64))
+class BinaryBundleItem(
+    override val path: String,
+    val content: ByteArray,
+    override val isExecutable: Boolean = false
+) : BundleItem() {
+    constructor(path: String, base64: String, isExecutable: Boolean = false) :
+            this(path, Base64.getMimeDecoder().decode(base64), isExecutable)
 
     init {
         if (path.length > 256) throw RuntimeException("path must be no more than 256 character long")
@@ -66,7 +75,7 @@ class BinaryBundleItem(override val path: String, val content: ByteArray) : Bund
     override fun equals(other: Any?): Boolean {
         return if (other is BinaryBundleItem) {
             if ((this.path == other.path) && (this.content.size == other.content.size)) {
-                String(this.content) == String(other.content)
+                (this.isExecutable == other.isExecutable) && (String(this.content) == String(other.content))
             } else {
                 false
             }

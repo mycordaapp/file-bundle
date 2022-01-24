@@ -17,7 +17,7 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
         val summaryMode: Boolean = false
     )
 
-    enum class StateMachine { readMetaData, bundleType, bundleName, bundleContent }
+    enum class StateMachine { readMetaData, itemType, itemName, itemExecutable, itemContent }
 
     override fun fromBundle(bundle: FileBundle): String {
         val sb = StringBuilder()
@@ -30,21 +30,23 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
                 is TextBundleItem -> {
                     sb.append("TextBundleItem\n")
                     sb.append(item.path).append("\n")
+                    if (item.isExecutable) sb.append("executable\n") else sb.append("notExecutable\n")
                     if (options.summaryMode) {
                         sb.append("length: ${item.content.length}\n")
                     } else {
                         sb.append(item.content)
-                        if (index != bundle.items.size-1) sb.append("\n")
+                        if (index != bundle.items.size - 1) sb.append("\n")
                     }
                 }
                 is BinaryBundleItem -> {
                     sb.append("BinaryBundleItem\n")
                     sb.append(item.path).append("\n")
+                    if (item.isExecutable) sb.append("executable\n") else sb.append("notExecutable\n")
                     if (options.summaryMode) {
                         sb.append("bytes: ${item.content.size}\n")
                     } else {
                         sb.append(base64Encoder.encodeToString(item.content))
-                        if (index != bundle.items.size-1) sb.append("\n")
+                        if (index != bundle.items.size - 1) sb.append("\n")
                     }
                 }
             }
@@ -62,6 +64,7 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
         val metaData = HashMap<String, String>()
         var bundleType = ""
         var bundleName = ""
+        var isExecutable = false
         var textContent = StringBuilder()
         val items = ArrayList<BundleItem>()
         adapted.lines().forEach {
@@ -71,24 +74,29 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
                         if (metaData.containsKey(".metadata.summaryMode")) {
                             throw RuntimeException("cannot read text stored in summary mode")
                         }
-                        state = StateMachine.bundleType
+                        state = StateMachine.itemType
                     } else {
                         val meta = extractMetaDataLine(it)
                         metaData[meta.first] = meta.second
                     }
                 }
-                StateMachine.bundleType -> {
+                StateMachine.itemType -> {
                     bundleType = it
-                    state = StateMachine.bundleName
+                    state = StateMachine.itemName
                 }
-                StateMachine.bundleName -> {
+                StateMachine.itemName -> {
                     bundleName = it
-                    state = StateMachine.bundleContent
+                    state = StateMachine.itemExecutable
                 }
-                StateMachine.bundleContent -> {
+                StateMachine.itemExecutable -> {
+                    if (!setOf("executable", "notExecutable").contains(it)) throw RuntimeException("$it unexpected")
+                    isExecutable = "executable" == it
+                    state = StateMachine.itemContent
+                }
+                StateMachine.itemContent -> {
                     if (it == options.fileSeparatorLine) {
-                        state = StateMachine.bundleType
-                        items.add(buildBundleItem(bundleType, bundleName, textContent.toString()))
+                        state = StateMachine.itemType
+                        items.add(buildBundleItem(bundleType, bundleName, textContent.toString(), isExecutable))
                         bundleName = ""
                         bundleType = ""
                         textContent.clear()
@@ -100,8 +108,8 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
             }
         }
 
-        if (state == StateMachine.bundleContent) {
-            items.add(buildBundleItem(bundleType, bundleName, textContent.toString()))
+        if (state == StateMachine.itemContent) {
+            items.add(buildBundleItem(bundleType, bundleName, textContent.toString(),isExecutable))
         }
 
         return FileBundleBuilder()
@@ -117,10 +125,15 @@ class TextAdapter(private val options: Options = Options()) : FileBundleAdapter<
         return Pair(parts[0], parts[1])
     }
 
-    private fun buildBundleItem(bundleType: String, bundleName: String, bundleContent: String): BundleItem {
+    private fun buildBundleItem(
+        bundleType: String,
+        bundleName: String,
+        bundleContent: String,
+        isExecutable: Boolean
+    ): BundleItem {
         return when (bundleType) {
-            "TextBundleItem" -> TextBundleItem(bundleName, bundleContent)
-            "BinaryBundleItem" -> BinaryBundleItem(bundleName, bundleContent)
+            "TextBundleItem" -> TextBundleItem(bundleName, bundleContent, isExecutable)
+            "BinaryBundleItem" -> BinaryBundleItem(bundleName, bundleContent, isExecutable)
             else -> throw RuntimeException("internal error - unexpected `$bundleType`")
         }
     }

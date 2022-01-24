@@ -3,19 +3,23 @@
 ---
 TextBundleItem
 unix.txt
+notExecutable
 Hello,
  world
 ---
 TextBundleItem
 windows.txt
+notExecutable
 Hello,
  world
 ---
 TextBundleItem
 trailing-unix.txt
+notExecutable
 Hello, world
 
 ---
 TextBundleItem
 trailing-windows.txt
+notExecutable
 Hello, world

@@ -10,6 +10,7 @@ import mycorda.app.fileBundle.adapters.FileBundleAdapter
 import mycorda.app.fileBundle.adapters.FilesAdapter
 import mycorda.app.fileBundle.adapters.TextAdapter
 import mycorda.app.helpers.random
+import mycorda.app.types.UniqueId
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.lang.RuntimeException
@@ -88,5 +89,6 @@ class FilesAdapterTest() : BaseAdapterTest<List<File>>() {
             throws<RuntimeException>(has(Exception::message, present(equalTo("cannot read text when in summary mode"))))
         )
     }
+
 
 }

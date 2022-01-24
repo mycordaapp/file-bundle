@@ -45,6 +45,20 @@ class TextAdapterTest : BaseAdapterTest<String>() {
         assertThat(actual, equalTo(expected))
     }
 
+
+
+    @Test
+    fun `xxshould convert multi file bundle`() {
+        val adapter = createAdapter(DataMode.actual)
+        val id = UniqueId.fromString("abcdef")
+        val result = adapter.fromBundle(Fixtures.allExampleFiles(id))
+        // uncomment to save new test date
+        //storeAdapted("exampleFilesxx", result)
+        assertAdapted(result, exampleFiles)
+    }
+
+
+
 }
 
 

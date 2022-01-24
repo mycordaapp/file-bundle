@@ -2,3 +2,4 @@
 .metadata.name=BinaryBundle
 .metadata.filename.1=greeting.bin
 .metadata.type.1=BinaryBundleItem
+.metadata.isExecutable.1=true

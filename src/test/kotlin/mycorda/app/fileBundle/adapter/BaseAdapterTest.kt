@@ -13,7 +13,7 @@ abstract class BaseAdapterTest<T> {
 
     protected abstract fun loadAdapted(path: String): T
     protected abstract fun storeAdapted(path: String, adapted: T)
-    protected abstract fun createAdapter(mode : DataMode): FileBundleAdapter<T>
+    protected abstract fun createAdapter(mode: DataMode): FileBundleAdapter<T>
 
     protected fun assertBundle(actual: FileBundle, expected: FileBundle) {
         assertThat(actual, equalTo(expected))
@@ -91,7 +91,7 @@ abstract class BaseAdapterTest<T> {
         val id = UniqueId.fromString("abcdef")
         val result = adapter.fromBundle(Fixtures.allExampleFiles(id))
         // uncomment to save new test date
-        storeAdapted("exampleFiles", result)
+        //storeAdapted("exampleFiles", result)
         assertAdapted(result, exampleFiles)
     }
 
@@ -101,6 +101,22 @@ abstract class BaseAdapterTest<T> {
         val id = UniqueId.fromString("abcdef")
         val result = adapter.toBundle(exampleFiles)
         assertBundle(result, Fixtures.allExampleFiles(id))
+    }
+
+    @Test
+    fun `should round trip`() {
+        val adapter = createAdapter(DataMode.actual)
+        val originals = listOf(
+            Fixtures.helloWorldBundle(),
+            Fixtures.binaryBundle(),
+            Fixtures.allExampleFiles(),
+        )
+        originals.forEach { original ->
+            val result =
+                adapter.toBundle(adapter.fromBundle(original))
+            assertThat(result, equalTo(original))
+        }
+
     }
 
 }

@@ -3,4 +3,5 @@
 ---
 TextBundleItem
 greeting.txt
+notExecutable
 Hello, world

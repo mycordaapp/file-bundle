@@ -3,4 +3,5 @@
 ---
 BinaryBundleItem
 greeting.bin
+executable
 SGVsbG8sIHdvcmxk

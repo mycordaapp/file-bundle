@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test
 
 
 class TextBundleItemTest : BaseBundleItemTest() {
-    override fun buildBundleItem(path: String): BundleItem = TextBundleItem(path, "foo")
+    override fun buildBundleItem(path: String, isExecutable: Boolean): BundleItem {
+        return TextBundleItem(path, "foo", isExecutable)
+    }
 
     @Test
     fun `should replace windows style line termination`() {

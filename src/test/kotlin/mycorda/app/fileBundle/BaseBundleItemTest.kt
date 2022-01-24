@@ -1,5 +1,7 @@
 package mycorda.app.fileBundle
 
+import com.natpryce.hamkrest.assertion.assertThat
+import com.natpryce.hamkrest.equalTo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -7,7 +9,7 @@ import java.lang.Exception
 
 abstract class BaseBundleItemTest {
 
-    protected abstract fun buildBundleItem(path :String) : BundleItem
+    protected abstract fun buildBundleItem(path: String, isExecutable: Boolean = false): BundleItem
 
     @Test
     fun `should throw exception if path invalid`() {
@@ -17,7 +19,7 @@ abstract class BaseBundleItemTest {
         assertThrows<Exception> { buildBundleItem("no\\backslash") }
         assertThrows<Exception> { buildBundleItem("asciiTextØnly") }
         assertThrows<Exception> { buildBundleItem("a".repeat(257)) }
-        assertThrows<Exception> { buildBundleItem("", ) }
+        assertThrows<Exception> { buildBundleItem("") }
     }
 
     @Test
@@ -31,5 +33,21 @@ abstract class BaseBundleItemTest {
         assertDoesNotThrow { buildBundleItem("UPPERCASE") }
         assertDoesNotThrow { buildBundleItem("a".repeat(256)) }
         assertDoesNotThrow { buildBundleItem("a") }
+    }
+
+    @Test
+    fun `should set and test isExecutable`() {
+        assertThat(
+            buildBundleItem("foo", true),
+            equalTo(buildBundleItem("foo", true))
+        )
+        assertThat(
+            buildBundleItem("foo", false),
+            !equalTo(buildBundleItem("foo", true))
+        )
+        assertThat(
+            buildBundleItem("foo", true),
+            !equalTo(buildBundleItem("foo", false))
+        )
     }
 }

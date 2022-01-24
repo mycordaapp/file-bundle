@@ -2,9 +2,13 @@
 .metadata.name=MixOfLineTerminationBundle
 .metadata.filename.1=unix.txt
 .metadata.type.1=TextBundleItem
+.metadata.isExecutable.1=false
 .metadata.filename.2=windows.txt
 .metadata.type.2=TextBundleItem
+.metadata.isExecutable.2=false
 .metadata.filename.3=trailing-unix.txt
 .metadata.type.3=TextBundleItem
+.metadata.isExecutable.3=false
 .metadata.filename.4=trailing-windows.txt
 .metadata.type.4=TextBundleItem
+.metadata.isExecutable.4=false

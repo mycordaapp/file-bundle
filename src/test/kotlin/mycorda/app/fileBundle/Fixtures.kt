@@ -28,7 +28,7 @@ object Fixtures {
         return FileBundleBuilder()
             .withName("BinaryBundle")
             .withId(id)
-            .addItem(BinaryBundleItem("greeting.bin", "Hello, world".toByteArray()))
+            .addItem(BinaryBundleItem("greeting.bin", "Hello, world".toByteArray(),true))
             .build()
     }
 
