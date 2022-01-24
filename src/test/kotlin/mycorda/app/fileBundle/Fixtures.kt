@@ -32,6 +32,7 @@ object Fixtures {
             .build()
     }
 
+
     fun allExampleFiles(id: UniqueId = UniqueId.randomUUID()): FileBundle {
         return FileBundleBuilder()
             .withName("ExampleFiles")
@@ -42,6 +43,7 @@ object Fixtures {
             .addItem(TextBundleItem("trailing-new-line.txt", "foo\n"))
             .addItem(TextBundleItem.fromResource("/examples/verylongline.txt", "verylongline.txt"))
             .addItem(TextBundleItem.fromResource("/examples/LICENCE", "LICENCE"))
+            .addItem(TextBundleItem.fromResource("/examples/foo.sh", "foo.sh", true))
             .build()
     }
 }

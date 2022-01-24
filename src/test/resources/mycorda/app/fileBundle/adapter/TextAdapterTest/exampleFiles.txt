@@ -43,3 +43,8 @@ TextBundleItem
 LICENCE
 notExecutable
 Lorem ipsum...
+---
+TextBundleItem
+foo.sh
+executable
+echo "boo"

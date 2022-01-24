@@ -39,9 +39,9 @@ class ScanDirectoryBuilder(
                 val path = it.canonicalPath.removePrefix(root.path + "/")
 
                 if (isTextFile(path)) {
-                    items.add(TextBundleItem.fromFile(it, path))
+                    items.add(TextBundleItem.fromFile(it, path, it.canExecute()))
                 } else {
-                    items.add(BinaryBundleItem.fromFile(it, path))
+                    items.add(BinaryBundleItem.fromFile(it, path, it.canExecute()))
                 }
             }
         }
@@ -57,6 +57,7 @@ class ScanDirectoryBuilder(
     private fun isTextFile(path: String): Boolean {
         return hasTextExtension(path) || isKnownTextFile(path)
     }
+
 
     private fun isKnownTextFile(path: String): Boolean {
         val parts = path.split("/")
@@ -75,7 +76,7 @@ class ScanDirectoryBuilder(
     }
 
     companion object {
-        val defaultTextFileExtensions = setOf("txt", "log", "md")
+        val defaultTextFileExtensions = setOf("txt", "log", "md", "sh")
         val defaultTextFileNames = setOf("LICENCE", "LICENSE")
     }
 }

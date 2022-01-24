@@ -42,14 +42,18 @@ class TextBundleItem(
     }
 
     companion object {
-        fun fromResource(resourcePath: String, path: String = resourcePath): TextBundleItem {
+        fun fromResource(
+            resourcePath: String,
+            path: String = resourcePath,
+            isExecutable: Boolean = false
+        ): TextBundleItem {
             val content = this::class.java.getResourceAsStream(resourcePath)!!.bufferedReader().readText()
-            return TextBundleItem(path, content)
+            return TextBundleItem(path, content, isExecutable)
         }
 
-        fun fromFile(file: File, path: String): TextBundleItem {
+        fun fromFile(file: File, path: String, isExecutable: Boolean = false): TextBundleItem {
             val content = file.readText()
-            return TextBundleItem(path, content)
+            return TextBundleItem(path, content, isExecutable)
         }
     }
 }
@@ -85,17 +89,21 @@ class BinaryBundleItem(
     }
 
     companion object {
-        fun fromResource(resourcePath: String, path: String = resourcePath): BinaryBundleItem {
+        fun fromResource(
+            resourcePath: String,
+            path: String = resourcePath,
+            isExecutable: Boolean = false
+        ): BinaryBundleItem {
             val content: ByteArray =
                 Files.readAllBytes(Paths.get(this::class.java.getResource(resourcePath).toURI()))
 
             //val content = this::class.java.getResourceAsStream(resourcePath)!!.readAllBytes()
-            return BinaryBundleItem(path, content)
+            return BinaryBundleItem(path, content, isExecutable)
         }
 
-        fun fromFile(file: File, path: String): BinaryBundleItem {
+        fun fromFile(file: File, path: String, isExecutable: Boolean = false): BinaryBundleItem {
             val content = file.readBytes()
-            return BinaryBundleItem(path, content)
+            return BinaryBundleItem(path, content, isExecutable)
         }
     }
 }

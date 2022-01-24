@@ -37,7 +37,6 @@ class ScanDirectoryBuilderTest {
 
         val bundle = builder.build()
 
-
         val testDir = ".testing/${String.random()}"
         println("extracting bundle to $testDir")
         val filesAdapter = FilesAdapter(testDir)

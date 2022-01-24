@@ -4,7 +4,11 @@ import mycorda.app.fileBundle.*
 import mycorda.app.fileBundle.builders.FileBundleBuilder
 import mycorda.app.types.UniqueId
 import java.io.File
-import java.lang.RuntimeException
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.attribute.PosixFileAttributes
+import java.nio.file.attribute.PosixFilePermission
+
 
 class FilesAdapter(private val rootDir: String) : FileBundleAdapter<List<File>> {
     init {
@@ -23,6 +27,9 @@ class FilesAdapter(private val rootDir: String) : FileBundleAdapter<List<File>> 
                         this.writeText(it.content)
                         results.add(this)
                     }
+                    if (it.isExecutable){
+                        makeExecutable(path)
+                    }
                 }
                 is BinaryBundleItem -> {
                     val path = "${rootDir}/${it.path}"
@@ -30,11 +37,24 @@ class FilesAdapter(private val rootDir: String) : FileBundleAdapter<List<File>> 
                         this.writeBytes(it.content)
                         results.add(this)
                     }
+                    if (it.isExecutable){
+                        makeExecutable(path)
+                    }
                 }
             }
         }
 
         return results
+    }
+
+    private fun makeExecutable(path: String) {
+        val path = Paths.get(path)
+        val perms: MutableSet<PosixFilePermission> =
+            Files.readAttributes(path, PosixFileAttributes::class.java).permissions()
+        perms.add(PosixFilePermission.OWNER_EXECUTE)
+        perms.add(PosixFilePermission.GROUP_EXECUTE)
+        perms.add(PosixFilePermission.OTHERS_EXECUTE)
+        Files.setPosixFilePermissions(path, perms)
     }
 
     private fun makeNestedDirsIfNecessary(it: BundleItem) {
